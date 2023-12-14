@@ -1,0 +1,39 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "text": "HackerRank Problem Solving part 1",
+      "completed": false
+    },
+    {
+      "id": "2",
+      "text": "HackerRank Problem Solving part 2",
+      "completed": false
+    },
+    {
+      "id": "3",
+      "text": "LeetCode Problem Solving",
+      "completed": false
+    },
+    {
+      "id": "4",
+      "text": "Join the progress review meeting at 9pm",
+      "completed": false
+    },
+    {
+      "id": "5",
+      "text": "Write an article about the \"Create Todo App Using Next JS\"",
+      "completed": false
+    },
+    {
+      "id": "6",
+      "text": "Create the Monthly Presentation",
+      "completed": false
+    },
+    {
+      "id": "99",
+      "text": "Another new task",
+      "completed": false
+    }
+  ]
+}

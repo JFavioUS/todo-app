@@ -1,0 +1,17 @@
+name: Deployment
+run-name: Deploying...
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Triggered by a ${{github.event_name}} event."
+      - run: echo "Job running on ${{ runner.os }} server."
+      - run: echo "Running on branch ${{ github.ref }} of ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout/@v4
