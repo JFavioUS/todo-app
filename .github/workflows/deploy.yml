@@ -1,18 +1,46 @@
 name: Deployment
-run-name: Deploy
-
 on:
   push:
     branches:
       - main
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Triggered by a ${{github.event_name}} event."
-      - run: echo "Job running on ${{ runner.os }} server."
-      - run: echo "Running on branch ${{ github.ref }} of ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout/@v4
-      - run: echo "${{ github.repository }} repository has been cloned."
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Cache dependencies
+        id: Cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json')}}
+      - name: Install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Build website
+        id: build-website
+        run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist
+  deploy:
+    needs: build
+    uses: ./.github/workflows/reusable.yml
+    with:
+      artifact-name: dist-files
+  print-deploy-result:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print deploy result
+        run: echo ${{ needs.deploy.result }}
+  report:
+    needs: [build, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report
+        run: echo ${{ toJSON(github) }}
